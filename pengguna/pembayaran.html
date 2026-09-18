@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran - Carimo.id</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: #050505;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            width: min(100%, 850px);
+            margin: auto;
+        }
+
+        .brand-mini {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .brand-mini img {
+            width: 72px;
+            height: 52px;
+            object-fit: contain;
+            display: block;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        h1 span {
+            color: #087cff;
+        }
+
+        .intro {
+            color: #999;
+            margin-bottom: 28px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 24px;
+            padding: 10px 16px;
+            color: #fff;
+            background: #087cff;
+            border: 1px solid #087cff;
+            border-radius: 7px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background: #0064d6;
+            border-color: #0064d6;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .box {
+            padding: 28px;
+            background: #101010;
+            border: 1px solid #222;
+            border-radius: 12px;
+        }
+
+        h2 {
+            margin-bottom: 18px;
+        }
+
+        .summary {
+            display: grid;
+            gap: 14px;
+            padding: 18px;
+            background: #070707;
+            border: 1px solid #333;
+            border-radius: 7px;
+        }
+
+        .summary span {
+            color: #087cff;
+            font-weight: bold;
+        }
+
+        .fixed-price {
+            margin-top: 18px;
+            padding: 16px;
+            color: #087cff;
+            background: #070707;
+            border: 1px solid #087cff;
+            border-radius: 7px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 14px 0;
+            padding: 13px;
+            border: 1px solid #333;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        label:has(input:checked) {
+            border-color: #087cff;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 12px;
+            padding: 13px;
+            color: #fff;
+            background: #087cff;
+            border: 1px solid #087cff;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        gallery img {
+            display: block;
+            width: 180px;
+            max-width: 100%;
+            height: auto;
+            margin: 18px auto;
+        }
+
+        .note {
+            display: none;
+            margin-top: 18px;
+            padding: 14px;
+            color: #8fe3a5;
+            border: 1px solid #287842;
+            border-radius: 7px;
+        }
+
+        @media (max-width: 650px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="brand-mini">
+            <img src="logo%20carimo.jpeg" alt="Logo Carimo.id">
+        </div>
+        <a
+            class="back-button"
+            href="cari.html"
+            onclick="return goBack('cari.html');">
+            &larr; Kembali
+        </a>
+
+        <h1>
+            Pembayaran
+            <span>Pesanan</span>
+        </h1>
+
+        <p class="intro">
+            Pembayaran untuk memulai pencarian mobil.
+        </p>
+
+        <div class="layout">
+            <section class="box">
+                <h2>
+                    Biaya Jasa Pencarian
+                </h2>
+
+                <div class="summary">
+                    <p>
+                        Nama:
+                        <span id="customer">-</span>
+                    </p>
+                    <p>
+                        Nomor Telepon:
+                        <span id="phone">-</span>
+                    </p>
+                    <p>
+                        Budget:
+                        <span id="budget">-</span>
+                    </p>
+                    <p>
+                        Tahun:
+                        <span id="tahun">-</span>
+                    </p>
+                </div>
+
+                <div class="fixed-price">
+                    Rp50.000
+                </div>
+            </section>
+
+            <section class="box">
+                <h2>
+                    Metode Pembayaran
+                </h2>
+
+                <form id="paymentForm">
+                    <label>
+                        <input
+                            type="radio"
+                            name="method"
+                            value="QRIS"
+                            checked
+                            required>
+                        QRIS
+                    </label>
+
+                    <button type="submit">
+                        Lanjut ke QRIS
+                    </button>
+                </form>
+
+                <p id="success" class="note">
+                    Pembayaran berhasil dikonfirmasi.
+                </p>
+            </section>
+        </div>
+    </main>
+    <script>
+        function goBack(fallback) {
+            if (document.referrer) {
+                history.back();
+            } else {
+                window.location.href = fallback;
+            }
+            return false;
+        }
+
+        const search = JSON.parse(
+            localStorage.getItem("carimqSearch") || "null"
+        );
+
+        let user = null;
+        const storedUser = localStorage.getItem("carimqUser");
+
+        if (storedUser) {
+            try {
+                user = JSON.parse(storedUser);
+            } catch (error) {
+                user = { name: storedUser, phone: "-" };
+            }
+        }
+
+        if (!user || !search) {
+            window.location.href = "login.html";
+        }
+
+        const userName = user.name || user.fullName || user.nama || "-";
+        const userPhone = user.phone || user.nomor || "-";
+
+        document.getElementById("customer").innerText = userName;
+        document.getElementById("phone").innerText = userPhone;
+        document.getElementById("budget").innerText = search
+            ? "Rp" + Number(search.budget).toLocaleString("id-ID")
+            : "-";
+        document.getElementById("tahun").innerText = search
+            ? search.tahun
+            : "-";
+
+        const successNote = document.getElementById("success");
+        const paid = new URLSearchParams(window.location.search).get("paid");
+
+        if (paid === "1") {
+            successNote.style.display = "block";
+        }
+
+        document
+            .getElementById("paymentForm")
+            .addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const order = {
+                id: "CMQ-" + Date.now(),
+                customer: userName,
+                phone: userPhone,
+                search: search,
+                package: "Recommended",
+                price: 50000,
+                paymentMethod: "QRIS",
+                status: "Menunggu pembayaran",
+                createdAt: new Date().toLocaleString("id-ID"),
+                createdAtMs: Date.now(),
+                expiresAt: Date.now() + 5 * 60 * 1000
+            };
+
+            const orders = JSON.parse(localStorage.getItem("carimqOrders") || "[]");
+            orders.push(order);
+            localStorage.setItem("carimqOrders", JSON.stringify(orders));
+            localStorage.setItem("carimqOrder", JSON.stringify(order));
+            window.location.href = "qris.html";
+        });
+    </script>
+</body>
+</html>

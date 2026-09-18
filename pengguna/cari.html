@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Mobil - Carimo.id</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: #050505;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            width: min(100%, 900px);
+            margin: auto;
+        }
+
+        .brand-mini {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .brand-mini img {
+            width: 72px;
+            height: 52px;
+            object-fit: contain;
+            display: block;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        h1 span {
+            color: #087cff;
+        }
+
+        .intro {
+            color: #999;
+            margin-bottom: 28px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 24px;
+            padding: 10px 16px;
+            color: #fff;
+            background: #087cff;
+            border: 1px solid #087cff;
+            border-radius: 7px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background: #0064d6;
+            border-color: #0064d6;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 32px;
+            background: #101010;
+            border: 1px solid #222;
+            border-radius: 12px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ddd;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            color: #fff;
+            background: #070707;
+            border: 1px solid #333;
+            border-radius: 7px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #087cff;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        button {
+            grid-column: 1 / -1;
+            padding: 13px;
+            color: #fff;
+            background: #087cff;
+            border: 1px solid #087cff;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="brand-mini">
+            <img src="logo%20carimo.jpeg" alt="Logo Carimo.id">
+        </div>
+        <a
+            class="back-button"
+            href="login.html"
+            onclick="return goBack('login.html');">
+            &larr; Kembali
+        </a>
+
+        <h1>
+            Data Mobil
+            <span>Impian Anda</span>
+        </h1>
+
+        <p class="intro">
+            Isi kriteria mobil, lalu pilih paket pencarian yang sesuai.
+        </p>
+
+        <form id="carForm">
+            <div>
+                <label for="budget">
+                    Budget Maksimal
+                </label>
+                <input
+                    id="budget"
+                    type="number"
+                    placeholder="Contoh: 250000000"
+                    required>
+            </div>
+
+            <div>
+                <label for="tahun">
+                    Tahun Mobil
+                </label>
+                <input
+                    id="tahun"
+                    type="text"
+                    placeholder="Contoh: 2018"
+                    required>
+            </div>
+
+            <div>
+                <label for="model">
+                    Merek Mobil
+                </label>
+                <input
+                    id="model"
+                    type="text"
+                    placeholder="Contoh: Toyota">
+            </div>
+
+            <div>
+                <label for="jenis">
+                    Jenis Mobil
+                </label>
+                <select id="jenis" required>
+                    <option value="">
+                        Pilih jenis
+                    </option>
+                    <option>MPV</option>
+                    <option>SUV</option>
+                    <option>Sedan</option>
+                    <option>Hatchback</option>
+                    <option>City Car</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="transmisi">
+                    Transmisi
+                </label>
+                <select id="transmisi" required>
+                    <option value="">
+                        Pilih transmisi
+                    </option>
+                    <option>Manual</option>
+                    <option>Automatic</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="bahanBakar">
+                    Bahan Bakar
+                </label>
+                <select id="bahanBakar" required>
+                    <option value="">
+                        Pilih bahan bakar
+                    </option>
+                    <option>Bensin</option>
+                    <option>Diesel</option>
+                    <option>Hybrid</option>
+                    <option>Electric</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="lokasi">
+                    Lokasi
+                </label>
+                <input
+                    id="lokasi"
+                    type="text"
+                    placeholder="Contoh: Medan"
+                    required>
+            </div>
+
+            <div class="full">
+                <label for="preferensi">
+                    Preferensi Khusus
+                </label>
+                <textarea
+                    id="preferensi"
+                    placeholder="Contoh: irit BBM, nyaman untuk keluarga..."></textarea>
+            </div>
+
+            <button type="submit">
+                Simpan Data dan Lanjut Pembayaran
+            </button>
+        </form>
+    </main>
+    <script>
+        function goBack(fallback) {
+            if (document.referrer) {
+                history.back();
+            } else {
+                window.location.href = fallback;
+            }
+            return false;
+        }
+
+        if (!localStorage.getItem("carimqUser")) {
+            window.location.href = "login.html";
+        }
+
+        document
+            .getElementById("carForm")
+            .addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const data = {};
+
+            this
+                .querySelectorAll("input, select, textarea")
+                .forEach(function(field) {
+                    data[field.id] = field.value.trim();
+                });
+
+            localStorage.setItem("carimqSearch", JSON.stringify(data));
+            window.location.href = "pembayaran.html";
+        });
+    </script>
+</body>
+</html>

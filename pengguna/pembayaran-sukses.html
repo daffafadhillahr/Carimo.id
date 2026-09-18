@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran Berhasil - Carimo.id</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background: #050505;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            width: min(100%, 620px);
+            padding: 32px 24px;
+            background: #101010;
+            border: 1px solid #222;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .brand-mini {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+
+        .brand-mini img {
+            width: 72px;
+            height: 52px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            margin-bottom: 18px;
+            background: rgba(40, 190, 95, 0.12);
+            border: 3px solid rgba(40, 190, 95, 0.9);
+            border-radius: 50%;
+            box-shadow: 0 0 0 6px rgba(40, 190, 95, 0.08);
+        }
+
+        .badge::before {
+            content: "✓";
+            display: block;
+            color: #4ade80;
+            font-size: 34px;
+            line-height: 1;
+            font-weight: 700;
+            transform: translateY(-1px);
+        }
+
+        h1 {
+            margin-bottom: 14px;
+            font-size: clamp(2rem, 5vw, 3rem);
+        }
+
+        .status {
+            margin-bottom: 12px;
+            color: #8fe3a5;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .info {
+            margin-bottom: 22px;
+            color: #b7b7b7;
+            line-height: 1.7;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            border: 1px solid #087cff;
+        }
+
+        .btn-primary {
+            background: #087cff;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <span class="badge" id="statusBadge"></span>
+        <h1 id="pageTitle">Status Pembayaran</h1>
+        <p class="status" id="statusText">Status: Menunggu pembayaran</p>
+        <p class="info" id="statusInfo">
+            Silakan scan QRIS yang tertera. Pesanan akan aktif setelah pembayaran diverifikasi admin.
+        </p>
+
+        <div class="actions">
+            <a class="btn btn-primary" href="homepage.html">Kembali ke Beranda</a>
+            <a class="btn btn-secondary" href="pembayaran.html">Lihat Pembayaran</a>
+        </div>
+    </div>
+
+    <script>
+        function syncStatus() {
+            const order = JSON.parse(localStorage.getItem("carimqOrder") || "null");
+            const badge = document.getElementById("statusBadge");
+            const statusText = document.getElementById("statusText");
+
+            if (order && order.status === "Pembayaran dikonfirmasi") {
+                badge.textContent = "";
+                document.getElementById("pageTitle").textContent = "Pembayaran Berhasil";
+                statusText.textContent = "Status: Berhasil";
+                document.getElementById("statusInfo").innerHTML = "Pembayaran Anda telah diterima dan pesanan sudah aktif.<br>Tim akan segera memproses pencarian mobil sesuai kebutuhan Anda.";
+                return;
+            }
+
+            badge.textContent = "";
+            document.getElementById("pageTitle").textContent = "Menunggu Pembayaran";
+            statusText.textContent = "Status: Menunggu pembayaran";
+            document.getElementById("statusInfo").textContent = "QRIS belum terdeteksi sebagai pembayaran. Silakan scan QRIS dan tunggu verifikasi admin.";
+        }
+
+        syncStatus();
+        setInterval(syncStatus, 1000);
+    </script>
+</body>
+</html>

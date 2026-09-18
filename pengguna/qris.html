@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRIS - Carimo.id</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: #050505;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            width: min(100%, 500px);
+            background: #101010;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .brand-mini {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+
+        .brand-mini img {
+            width: 72px;
+            height: 52px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .topbar h1 {
+            font-size: 1.5rem;
+        }
+
+        .badge {
+            padding: 6px 10px;
+            background: #087cff;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .amount {
+            margin: 18px 0 24px;
+            padding: 18px;
+            background: #070707;
+            border: 1px solid #333;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #087cff;
+        }
+
+        .status-panel {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: #070707;
+            border: 1px solid #333;
+            border-radius: 10px;
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-badge.pending {
+            background: rgba(255, 186, 0, 0.18);
+            color: #ffd166;
+            border: 1px solid rgba(255, 186, 0, 0.5);
+        }
+
+        .status-badge.success {
+            background: rgba(40, 190, 95, 0.14);
+            color: #8fe3a5;
+            border: 1px solid rgba(40, 190, 95, 0.5);
+        }
+
+        .status-badge.expired {
+            background: rgba(255, 80, 80, 0.14);
+            color: #ff8a8a;
+            border: 1px solid rgba(255, 80, 80, 0.5);
+        }
+
+        .timer {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #087cff;
+            margin-bottom: 6px;
+        }
+
+        .status-text {
+            color: #b7b7b7;
+            font-size: 0.9rem;
+        }
+
+        .qrbox {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 22px;
+        }
+
+        .qrbox img {
+            display: block;
+            width: 240px;
+            height: 240px;
+            object-fit: contain;
+        }
+
+        .status-panel {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: #070707;
+            border: 1px solid #333;
+            border-radius: 10px;
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-badge.pending {
+            background: rgba(255, 186, 0, 0.18);
+            color: #ffd166;
+            border: 1px solid rgba(255, 186, 0, 0.5);
+        }
+
+        .status-badge.success {
+            background: rgba(40, 190, 95, 0.14);
+            color: #8fe3a5;
+            border: 1px solid rgba(40, 190, 95, 0.5);
+        }
+
+        .status-badge.expired {
+            background: rgba(255, 80, 80, 0.14);
+            color: #ff8a8a;
+            border: 1px solid rgba(255, 80, 80, 0.5);
+        }
+
+        .timer {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #087cff;
+            margin-bottom: 6px;
+        }
+
+        .status-text {
+            color: #b7b7b7;
+            font-size: 0.9rem;
+        }
+
+        .actions {
+            display: grid;
+            gap: 12px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            border: 1px solid #087cff;
+            transition: 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #087cff;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+        }
+
+        .btn:hover {
+            filter: brightness(1.08);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="brand-mini">
+            <img src="logo%20carimo.jpeg" alt="Logo Carimo.id">
+        </div>
+        <div class="topbar">
+            <h1>QRIS Payment</h1>
+            <span class="badge">Bayar</span>
+        </div>
+
+        <div class="status-panel">
+            <div class="status-header">
+                <span>Status pembayaran</span>
+                <span id="paymentStatusBadge" class="status-badge pending">Menunggu pembayaran</span>
+            </div>
+            <div id="paymentTimer" class="timer">05:00</div>
+            <p id="paymentStatusText" class="status-text">Bayar sebelum waktu habis.</p>
+        </div>
+
+        <div class="amount">Rp50.000</div>
+
+        <div class="qrbox">
+            <img src="c:\Users\MSI MODERN 14H\OneDrive\Documents\qris carimo.jpeg" alt="QRIS Carimo.id">
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" id="confirmBtn">Cek Status Pembayaran</button>
+            <a class="btn btn-secondary" href="pembayaran.html">Kembali</a>
+        </div>
+    </div>
+
+    <script>
+        const confirmBtn = document.getElementById("confirmBtn");
+        const statusBadge = document.getElementById("paymentStatusBadge");
+        const paymentTimer = document.getElementById("paymentTimer");
+        const paymentStatusText = document.getElementById("paymentStatusText");
+
+        function formatTime(ms) {
+            const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+            const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+            const seconds = String(totalSeconds % 60).padStart(2, "0");
+            return minutes + ":" + seconds;
+        }
+
+        function getActiveOrder() {
+            const active = JSON.parse(localStorage.getItem("carimqOrder") || "null");
+            const orders = JSON.parse(localStorage.getItem("carimqOrders") || "[]");
+            return active && orders.length ? orders.find(order => order.id === active.id) || active : active;
+        }
+
+        function saveOrder(order) {
+            const orders = JSON.parse(localStorage.getItem("carimqOrders") || "[]");
+            const index = orders.findIndex(item => item.id === order.id);
+            if (index >= 0) orders[index] = order;
+            else orders.push(order);
+            localStorage.setItem("carimqOrders", JSON.stringify(orders));
+            localStorage.setItem("carimqOrder", JSON.stringify(order));
+        }
+
+        function updateTimer() {
+            let order = getActiveOrder();
+
+            if (!order) {
+                order = {
+                    status: "Menunggu pembayaran",
+                    expiresAt: Date.now() + 5 * 60 * 1000,
+                    paymentMethod: "QRIS"
+                };
+                saveOrder(order);
+            }
+
+            if (!order.expiresAt) {
+                order.expiresAt = Date.now() + 5 * 60 * 1000;
+                saveOrder(order);
+            }
+
+            if (order.status === "Pembayaran dikonfirmasi") {
+                statusBadge.textContent = "Sudah dibayar";
+                statusBadge.className = "status-badge success";
+                paymentTimer.textContent = "Lunas";
+                paymentStatusText.textContent = "Pembayaran berhasil dikonfirmasi.";
+                window.location.href = "pembayaran-sukses.html";
+                return;
+            }
+
+            const remaining = Number(order.expiresAt) - Date.now();
+
+            if (remaining <= 0) {
+                order.status = "Pembayaran kadaluarsa";
+                saveOrder(order);
+                statusBadge.textContent = "Kadaluarsa";
+                statusBadge.className = "status-badge expired";
+                paymentTimer.textContent = "00:00";
+                paymentStatusText.textContent = "Waktu pembayaran habis. Silakan buat pesanan baru.";
+                confirmBtn.disabled = true;
+                confirmBtn.style.opacity = "0.7";
+                return;
+            }
+
+            statusBadge.textContent = "Menunggu pembayaran";
+            statusBadge.className = "status-badge pending";
+            paymentTimer.textContent = formatTime(remaining);
+            paymentStatusText.textContent = "Bayar sebelum waktu habis.";
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
+
+        confirmBtn.addEventListener("click", function () {
+            let order = getActiveOrder();
+
+            if (order) {
+                if (order.status === "Pembayaran dikonfirmasi") {
+                    window.location.href = "pembayaran-sukses.html";
+                    return;
+                }
+
+                order.paymentMethod = "QRIS";
+                order.status = "Menunggu pembayaran";
+                saveOrder(order);
+                window.location.href = "pembayaran-menunggu.html";
+                return;
+            }
+
+            statusBadge.textContent = "Menunggu pembayaran";
+            statusBadge.className = "status-badge pending";
+            paymentStatusText.textContent = "Belum ada konfirmasi pembayaran. Silakan scan QRIS, lalu tunggu verifikasi admin.";
+        });
+    </script>
+</body>
+</html>

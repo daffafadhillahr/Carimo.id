@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menunggu Pembayaran - Carimo.id</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { min-height: 100vh; display: grid; place-items: center; padding: 24px; color: #fff; background: #080b10; font-family: Arial, sans-serif; }
+        .card { width: min(100%, 620px); padding: 34px 26px; text-align: center; background: #111720; border: 1px solid #253241; border-radius: 16px; }
+        .brand { margin-bottom: 24px; color: #2f8cff; font-size: 1.25rem; font-weight: 800; }
+        .badge { display: grid; place-items: center; width: 70px; height: 70px; margin: 0 auto 22px; color: #f5c451; border: 3px solid #f5c451; border-radius: 50%; font-size: 2rem; }
+        h1 { margin-bottom: 12px; font-size: clamp(1.8rem, 5vw, 2.7rem); }
+        .status { margin-bottom: 14px; color: #f5c451; font-weight: 700; }
+        .info { margin: 0 auto 26px; max-width: 470px; color: #aeb8c5; line-height: 1.7; }
+        .actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .btn { padding: 12px 18px; color: #fff; border: 1px solid #2f8cff; border-radius: 8px; font-weight: 700; text-decoration: none; }
+        .primary { background: #2f8cff; }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <div class="brand">Carimo.id</div>
+        <div class="badge">...</div>
+        <h1>Menunggu Pembayaran</h1>
+        <p class="status">Status: Menunggu pembayaran</p>
+        <p class="info">Pembayaran belum terdeteksi. Silakan scan QRIS yang tertera dan tunggu verifikasi dari admin.</p>
+        <div class="actions">
+            <a class="btn primary" href="qris.html">Kembali ke QRIS</a>
+            <a class="btn" href="homepage.html">Kembali ke Beranda</a>
+        </div>
+    </main>
+    <script>
+        function checkPaymentStatus() {
+            const order = JSON.parse(localStorage.getItem("carimqOrder") || "null");
+            if (order && order.status === "Pembayaran dikonfirmasi") {
+                window.location.href = "pembayaran-sukses.html";
+            }
+        }
+
+        checkPaymentStatus();
+        setInterval(checkPaymentStatus, 1000);
+    </script>
+</body>
+</html>
